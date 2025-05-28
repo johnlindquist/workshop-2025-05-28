@@ -1,0 +1,29 @@
+{
+  "name": "@workshop-2025-05-28/backend",
+  "version": "0.0.1",
+  "private": true,
+  "nx": {
+    "targets": {
+      "serve": {
+        "continuous": true,
+        "executor": "@nx/js:node",
+        "defaultConfiguration": "development",
+        "dependsOn": [
+          "build"
+        ],
+        "options": {
+          "buildTarget": "@workshop-2025-05-28/backend:build",
+          "runBuildTargetDependencies": false
+        },
+        "configurations": {
+          "development": {
+            "buildTarget": "@workshop-2025-05-28/backend:build:development"
+          },
+          "production": {
+            "buildTarget": "@workshop-2025-05-28/backend:build:production"
+          }
+        }
+      }
+    }
+  }
+}
