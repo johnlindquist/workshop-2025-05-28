@@ -154,16 +154,28 @@ export const api = {
 };
 
 // Error handling utility
-export function isApiError(error: any): error is { response: { data: ApiError } } {
-    return error.response && error.response.data && error.response.data.error;
+export function isApiError(error: unknown): error is { response: { data: ApiError } } {
+    if (!error || typeof error !== 'object') return false;
+
+    const errorObj = error as Record<string, unknown>;
+    if (!('response' in errorObj) || !errorObj.response || typeof errorObj.response !== 'object') return false;
+
+    const response = errorObj.response as Record<string, unknown>;
+    if (!('data' in response) || !response.data || typeof response.data !== 'object') return false;
+
+    const data = response.data as Record<string, unknown>;
+    return 'error' in data && !!data.error;
 }
 
-export function getErrorMessage(error: any): string {
+export function getErrorMessage(error: unknown): string {
     if (isApiError(error)) {
         return error.response.data.error.message;
     }
-    if (error.message) {
-        return error.message;
+    if (error && typeof error === 'object' && 'message' in error) {
+        const errorObj = error as Record<string, unknown>;
+        if (typeof errorObj.message === 'string') {
+            return errorObj.message;
+        }
     }
     return 'An unexpected error occurred';
 }
