@@ -1,0 +1,30 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# One-Command GitHub Publish Rule
+
+To publish this project as a new public GitHub repository with a single command, use the following:
+
+```sh
+gh repo create <repo-name> --public --source=. --remote=origin --push --description "<description>"
+```
+
+- Replace `<repo-name>` with your desired repository name (e.g., `workshop-2025-05-28`).
+- Replace `<description>` with a short description of your project.
+- This command will:
+  - Create a new public repository under your authenticated GitHub account
+  - Add the remote origin
+  - Push the current code to GitHub
+
+**Requirements:**
+- The GitHub CLI (`gh`) must be installed and authenticated (`gh auth login`).
+- The project must be a git repository (`git init` if not already).
+
+**Example:**
+```sh
+gh repo create workshop-2025-05-28 --public --source=. --remote=origin --push --description "Workshop project for 2025-05-28"
+```
+
+This rule allows you to publish your project to GitHub in a single command, without further discussion.
