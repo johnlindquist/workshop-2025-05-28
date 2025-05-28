@@ -155,9 +155,6 @@ export const api = {
 
 // Error handling utility
 export function isApiError(error: unknown): error is { response: { data: ApiError } } {
-    // Intentional error for testing
-    const test: string = 123; // This should cause a TypeScript error
-
     if (!error || typeof error !== 'object') return false;
 
     const errorObj = error as Record<string, unknown>;
