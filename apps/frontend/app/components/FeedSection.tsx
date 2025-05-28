@@ -1,5 +1,6 @@
 import React from 'react';
 import FeedCard from './FeedCard';
+import Pagination from './Pagination';
 
 const placeholderImg = (width: number, height: number, text = '', bgColor = 'cccccc', textColor = '969696') => {
   return `https://placehold.co/${width}x${height}/${bgColor}/${textColor}?text=${encodeURIComponent(text)}`;
@@ -95,6 +96,7 @@ const FeedSection: React.FC = () => {
                   <FeedCard key={index} item={item} />
                 ))}
               </div>
+              <Pagination />
             </main>
           </div>
         </div>
