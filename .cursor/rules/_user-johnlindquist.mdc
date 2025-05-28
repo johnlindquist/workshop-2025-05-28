@@ -1,0 +1,102 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Workshop20250528 - Project Rules
+
+## 1. Project Overview
+
+goal: Workshop project for implementing a mock design from designs/mock.tsx into a Next.js frontend application. The project demonstrates building React components with Tailwind CSS styling, dark mode functionality, and comprehensive testing.
+type: Monorepo (Nx workspace) with Next.js Web Application
+key features:
+- React component implementation from design mockups
+- Dark mode toggle functionality with persistent state
+- Comprehensive component testing with Jest and React Testing Library
+- Tailwind CSS styling with responsive design
+- Workshop banner, header, hero section, topics grid, feed section, pagination, and footer components
+
+## 2. Technology Stack
+
+language(s): TypeScript 5.7.2 (from tsconfig.base.json and package.json)
+framework(s): Next.js 15.3.2 (App Router - from apps/frontend/package.json), React 19.0.0 (from apps/frontend/package.json)
+ui library/styling: Tailwind CSS v4 (from apps/frontend/package.json), Custom components with placeholder images
+database(s): [N/A]
+state management: React Context (Local State - useState/useEffect for dark mode)
+api layer: [N/A]
+key libraries:
+- @testing-library/react for component testing
+- @testing-library/jest-dom for DOM testing utilities
+- jest for test framework
+- ts-jest for TypeScript testing support
+
+## 3. Project Structure
+
+main source directory: apps/frontend/app/
+core directories:
+- components/: Reusable UI elements (WorkshopBanner, Header, HeroSection, BrowseTopics, FeedCard, FeedSection, Pagination, Footer)
+- lib/ or utils/: [N/A]
+- services/ or api/: [N/A]
+- types/ or interfaces/: [N/A]
+- db/ or prisma/ or drizzle/: [N/A]
+- tests/ or __tests__/: Co-located test files (*.spec.tsx)
+diagram/link: [N/A]
+
+## 4. Coding Standards & Conventions
+
+language usage: Strict TypeScript mode (tsconfig.base.json strict: true), Prefer functional components (React), Use async/await, React 19 JSX transform
+naming conventions:
+- files/folders: kebab-case for components (WorkshopBanner.tsx, WorkshopBanner.spec.tsx)
+- components: PascalCase (WorkshopBanner, Header, HeroSection)
+- variables/functions: camelCase (toggleDarkMode, handleSortChange)
+- types/interfaces: PascalCase with Props suffix (HeaderProps, FooterProps)
+code style/formatting: [No explicit prettier/eslint config found in project]
+comments: English only, JSDoc for component props, Minimal comments with INFO logging for component lifecycle
+imports: Relative paths for local components, Absolute paths with @/ alias configured in tsconfig.json
+
+## 5. Key Principles & Best Practices
+
+- Component-based architecture with reusable UI elements
+- Comprehensive testing for all components with React Testing Library
+- Logging integration with NEXT_PUBLIC_LOG_LEVEL environment variable
+- Dark mode implementation with persistent state management
+- Responsive design with Tailwind CSS breakpoints
+
+## 6. Testing
+
+framework: Jest 29.7.0 with ts-jest, React Testing Library 16.3.0, jsdom environment
+types: Unit tests for all components (*.spec.tsx), Component rendering tests, User interaction tests, Logging verification tests
+location: Co-located with source files (e.g., WorkshopBanner.spec.tsx alongside WorkshopBanner.tsx)
+coverage expectations: [N/A]
+
+## 7. Tooling & Workflow
+
+package manager: pnpm (pnpm-lock.yaml present)
+build command(s): `pnpm build` (from apps/frontend/package.json)
+run command(s) (dev): `pnpm dev` (Next.js with turbopack from apps/frontend/package.json)
+version control: Git with conventional commits (feat:, chore: prefixes used in task documentation)
+ci/cd: [Information not found in project context]
+ide recommendations: [N/A]
+
+## 8. (Optional) Database / API Guidelines
+
+[N/A]
+
+## 9. (Optional) Specific Feature Rules
+
+- Dark Mode: Implemented using useState and useEffect hooks, controls 'dark' class on html element, toggle buttons in Header and Footer components
+- Component Logging: All components log INFO messages when rendered and on user interactions, controlled by NEXT_PUBLIC_LOG_LEVEL=info environment variable
+- Component Testing: Each component requires comprehensive test coverage including rendering, user interactions, and logging verification
+
+## 10. (Optional) Rule Referencing
+
+- See [react-rules.mdc](mdc:.cursor/rules/react-rules.mdc) for detailed React component rules
+- Follow guidelines in [task-execute.mdc](mdc:.cursor/rules/task-execute.mdc) for task execution workflow
+- Use [_global.mdc](mdc:.cursor/rules/_global.mdc) for global development directives
+
+## 11. Commands to Avoid Running
+
+The following commands should not be executed as they are long-running or problematic:
+- `pnpm nx lint frontend && pnpm nx test frontend` (long-running command that can cause interruptions)
+- Any commands that combine linting and testing in a single execution
+- Commands that run in watch mode or continuous integration mode
