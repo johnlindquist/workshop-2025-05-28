@@ -1,0 +1,46 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+# GitHub Issue Creation Rule (External Repositories)
+
+## Purpose
+Standardize the process for creating issues in external repositories (e.g., Vercel/Next.js) using the GitHub CLI, ensuring compliance with repository-specific templates and guidelines.
+
+## Steps
+
+1. **Check for Issue Templates**
+   - Attempt to download `.github/ISSUE_TEMPLATE/config.yml` from the target repository's default branch (usually `main` or `canary`).
+     - Example: `wget https://raw.githubusercontent.com/<owner>/<repo>/<branch>/.github/ISSUE_TEMPLATE/config.yml -O config.yml`
+   - If `config.yml` exists, review it for template names and types (e.g., markdown, YAML, or web forms).
+   - Attempt to download referenced template files (e.g., `bug_report.md`, `feature_request.md`).
+   - If templates are not found or only web forms are referenced, note that CLI-based issue creation may not be possible.
+
+2. **Prepare Issue Content**
+   - If a template is available, copy its structure and fill in all required fields with project-relevant details.
+   - If only web forms are supported, document that the issue must be created via the GitHub web interface.
+   - If no template is found, proceed with a clear, concise issue body including:
+     - Title
+     - Steps to reproduce
+     - Expected behavior
+     - Actual behavior
+     - Environment details (OS, CLI version, etc.)
+     - Suggestion or request
+
+3. **Create the Issue Using GitHub CLI**
+   - Use the following command, replacing placeholders as needed:
+     ```sh
+     gh issue create --repo <owner>/<repo> --title "<title>" --body "<body>"
+     ```
+   - If the CLI prompts for a template interactively, select the most appropriate one and fill in the required fields.
+   - If the CLI fails due to template or permission issues, fall back to the web interface and document the reason.
+
+4. **Post-Issue Actions**
+   - Copy the resulting issue URL to the clipboard for tracking and reference.
+   - Optionally, open the issue in a browser for immediate review.
+
+## Notes
+- Always check for and follow repository-specific contribution guidelines.
+- If the repository disables blank issues or enforces web forms, CLI-based creation may not be possible.
+- Document any deviations from this process for future reference.

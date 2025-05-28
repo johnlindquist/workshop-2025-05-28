@@ -1,6 +1,6 @@
 ---
-description: Search GitHub for examples
-globs:
+description: 
+globs: 
 alwaysApply: false
 ---
 # How to Use the `ghx` CLI for GitHub Code Search
