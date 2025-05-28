@@ -2,10 +2,16 @@
   "name": "@workshop-2025-05-28/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "ci:verify": "pnpm exec nx affected -t lint test build",
+    "ci:verify-all": "pnpm exec nx run-many -t lint test build",
+    "hooks:install": "node scripts/install-hooks.js",
+    "hooks:uninstall": "node scripts/uninstall-hooks.js"
+  },
   "private": true,
   "devDependencies": {
     "@nx/express": "21.1.2",
+    "@nx/jest": "^21.1.2",
     "@nx/js": "21.1.2",
     "@nx/node": "21.1.2",
     "@nx/web": "21.1.2",
