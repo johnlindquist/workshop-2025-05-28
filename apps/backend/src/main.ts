@@ -8,9 +8,15 @@ import cors from 'cors';
 import * as path from 'path';
 import { Topic } from './types/topic';
 import { FeedItem, FeedResponse } from './types/feed';
+import { search } from './utils/search';
 import { logger } from './utils/logger';
+import { requestLogger } from './middleware/requestLogger';
+import { errorHandler, notFoundHandler } from './middleware/errorHandler';
 
 const app = express();
+
+// Request logging middleware (first to capture all requests)
+app.use(requestLogger);
 
 // CORS middleware configuration
 app.use(cors({
@@ -168,6 +174,32 @@ app.get('/api/feed', (req, res) => {
   logger.info(`Feed API endpoint called with page=${page}, limit=${limit}, sort=${sort}, returning ${paginatedItems.length} items`);
   res.json(response);
 });
+
+// Search API endpoint with query filtering
+app.get('/api/search', (req, res) => {
+  const query = req.query.q as string;
+
+  // Request validation middleware - ensure query parameter is provided and not empty
+  if (!query || query.trim() === '') {
+    logger.warn('Search API endpoint called without query parameter');
+    return res.status(400).json({
+      error: 'Query parameter "q" is required and cannot be empty',
+      message: 'Please provide a search query using the "q" parameter'
+    });
+  }
+
+  // Perform search
+  const results = search(query.trim(), topicsData, feedData);
+
+  logger.info(`Search API endpoint called with query=${query}, found ${results.length} results`);
+  res.json(results);
+});
+
+// 404 handler for unmatched routes (must be after all route definitions)
+app.use(notFoundHandler);
+
+// Error handling middleware (must be last)
+app.use(errorHandler);
 
 const port = process.env.PORT || 3333;
 const server = app.listen(port, () => {
