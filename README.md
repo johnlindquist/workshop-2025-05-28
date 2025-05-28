@@ -93,3 +93,5 @@ And join the Nx community:
 
 This project includes git hooks to prevent CI failures. Run `pnpm run hooks:install` to set them up.
 See [docs/git-hooks.md](docs/git-hooks.md) for more information.
+
+**Note**: The hooks will run automatically on commit and push to verify code quality.
