@@ -7,6 +7,7 @@ import express from 'express';
 import cors from 'cors';
 import * as path from 'path';
 import { Topic } from './types/topic';
+import { FeedItem, FeedResponse } from './types/feed';
 import { logger } from './utils/logger';
 
 const app = express();
@@ -20,6 +21,11 @@ app.use(cors({
 app.use(express.json());
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
+// Helper function for placeholder images
+const placeholderImg = (width: number, height: number, text = '', bgColor = 'cccccc', textColor = '969696') => {
+  return `https://placehold.co/${width}x${height}/${bgColor}/${textColor}?text=${encodeURIComponent(text)}`;
+};
+
 // Topics data (matching frontend hardcoded data)
 const topicsData: Topic[] = [
   { name: 'React', href: '#', imgSrc: 'https://placehold.co/40x40/cccccc/969696?text=R' },
@@ -32,6 +38,83 @@ const topicsData: Topic[] = [
   { name: 'Angular', href: '#', imgSrc: 'https://placehold.co/40x40/cccccc/969696?text=A' },
 ];
 
+// Feed data (matching frontend hardcoded data with additional metadata)
+const feedData: FeedItem[] = [
+  {
+    type: 'article',
+    title: "AI Dev Essentials #7: Microsoft's AI Blitz, Google's NotebookLM Shines & New Coding Agents",
+    author: 'John Lindquist',
+    authorImg: placeholderImg(32, 32, 'JL'),
+    imgSrc: placeholderImg(150, 150, 'AI'),
+    href: '#',
+    isLarge: true,
+    created_at: '2025-05-28T10:00:00Z',
+    popularity: 95,
+    rating: 4.8,
+    watch_count: 1250,
+  },
+  {
+    type: 'lesson',
+    title: 'Local AI Code Reviews with the CodeRabbit Extension in Cursor',
+    author: 'John Lindquist',
+    authorImg: placeholderImg(32, 32, 'JL'),
+    imgSrc: placeholderImg(85, 85, 'CR'),
+    href: '#',
+    created_at: '2025-05-27T14:30:00Z',
+    popularity: 87,
+    rating: 4.6,
+    watch_count: 980,
+  },
+  {
+    type: 'lesson',
+    title: 'Create a Simple GitHub Issue Search MCP Server using Cursor',
+    author: 'Ákos Kőműves',
+    authorImg: placeholderImg(32, 32, 'AK'),
+    imgSrc: placeholderImg(85, 85, 'GH'),
+    href: '#',
+    created_at: '2025-05-26T09:15:00Z',
+    popularity: 78,
+    rating: 4.5,
+    watch_count: 756,
+  },
+  {
+    type: 'article',
+    title: 'AI Dev Essentials #6: Cursor 0.50, Zed, Cloudflare & AI Workflows',
+    author: 'John Lindquist',
+    authorImg: placeholderImg(32, 32, 'JL'),
+    imgSrc: placeholderImg(85, 85, 'AI6'),
+    href: '#',
+    created_at: '2025-05-25T16:45:00Z',
+    popularity: 92,
+    rating: 4.7,
+    watch_count: 1100,
+  },
+  {
+    type: 'lesson',
+    title: 'Automatically Improve Cursor Rules Using Custom Prompts',
+    author: 'John Lindquist',
+    authorImg: placeholderImg(32, 32, 'JL'),
+    imgSrc: placeholderImg(85, 85, 'CR'),
+    href: '#',
+    created_at: '2025-05-24T11:20:00Z',
+    popularity: 83,
+    rating: 4.4,
+    watch_count: 890,
+  },
+  {
+    type: 'lesson',
+    title: 'Clean up Legacy Functions for Testability in Cursor (0.50+) with cmd+k',
+    author: 'John Lindquist',
+    authorImg: placeholderImg(32, 32, 'JL'),
+    imgSrc: placeholderImg(85, 85, 'CMD'),
+    href: '#',
+    created_at: '2025-05-23T13:10:00Z',
+    popularity: 75,
+    rating: 4.3,
+    watch_count: 654,
+  },
+];
+
 app.get('/api', (req, res) => {
   res.send({ message: 'Welcome to backend!' });
 });
@@ -40,6 +123,50 @@ app.get('/api', (req, res) => {
 app.get('/api/topics', (req, res) => {
   logger.info(`Topics API endpoint called, returning ${topicsData.length} topics`);
   res.json(topicsData);
+});
+
+// Feed API endpoint with pagination and sorting
+app.get('/api/feed', (req, res) => {
+  const page = parseInt(req.query.page as string) || 1;
+  const limit = parseInt(req.query.limit as string) || 6;
+  const sort = req.query.sort as string || 'created_at';
+
+  // Sort the data based on the sort parameter
+  let sortedData = [...feedData];
+  switch (sort) {
+    case 'popular':
+      sortedData.sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
+      break;
+    case 'rating':
+      sortedData.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+      break;
+    case 'most_watched':
+      sortedData.sort((a, b) => (b.watch_count || 0) - (a.watch_count || 0));
+      break;
+    case 'created_at':
+    default:
+      sortedData.sort((a, b) => new Date(b.created_at || '').getTime() - new Date(a.created_at || '').getTime());
+      break;
+  }
+
+  // Calculate pagination
+  const startIndex = (page - 1) * limit;
+  const endIndex = startIndex + limit;
+  const paginatedItems = sortedData.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(sortedData.length / limit);
+
+  const response: FeedResponse = {
+    items: paginatedItems,
+    pagination: {
+      page,
+      limit,
+      total: sortedData.length,
+      totalPages,
+    },
+  };
+
+  logger.info(`Feed API endpoint called with page=${page}, limit=${limit}, sort=${sort}, returning ${paginatedItems.length} items`);
+  res.json(response);
 });
 
 const port = process.env.PORT || 3333;
