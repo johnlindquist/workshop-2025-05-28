@@ -6,6 +6,7 @@
   "private": true,
   "devDependencies": {
     "@nx/express": "21.1.2",
+    "@nx/jest": "^21.1.2",
     "@nx/js": "21.1.2",
     "@nx/node": "21.1.2",
     "@nx/web": "21.1.2",
