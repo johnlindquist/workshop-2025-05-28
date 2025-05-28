@@ -1,0 +1,97 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Workshop 2025-05-28 Backend Setup - Project Rules
+
+## 1. Project Overview
+
+goal: Workshop project for setting up a backend infrastructure with Express.js and comprehensive testing capabilities using Nx monorepo architecture. This is a learning/demonstration project focused on backend API development and E2E testing.
+type: Monorepo with Backend API and Frontend Applications
+key features:
+- Express.js backend API with TypeScript and Webpack bundling
+- End-to-end testing infrastructure with Jest and SWC
+- Nx monorepo workspace management with plugin-based configuration
+- Next.js frontend application with React 19 and Tailwind CSS
+
+## 2. Technology Stack
+
+language(s): TypeScript 5.7.2 (from tsconfig.base.json and package.json), Node.js 18+ (from @types/node ~18.16.9)
+framework(s): Express.js 4.21.2 (backend), Next.js 15.3.2 (frontend with App Router), Nx 21.1.2 (monorepo framework), React 19.0.0 (frontend)
+ui library/styling: Tailwind CSS v4 (from frontend package.json), PostCSS (postcss.config.mjs)
+database(s): [N/A - No database configuration found]
+state management: [N/A - Local state management]
+api layer: REST API via Express.js (backend serves on port 3333 with /api endpoint)
+key libraries:
+- express (^4.21.2) for HTTP server
+- axios (^1.6.0) for HTTP client and testing
+- @swc/core (~1.5.7) for fast TypeScript compilation
+- webpack-cli (^5.1.4) for bundling
+- react-refresh (^0.10.0) for hot reloading
+
+## 3. Project Structure
+
+main source directory: apps/
+core directories:
+- apps/backend/: Express.js backend application with src/, dist/, webpack.config.js
+- apps/backend-e2e/: End-to-end testing for backend with Jest configuration
+- apps/frontend/: Next.js frontend application with app/ directory (App Router)
+- packages/: Shared packages and libraries (currently empty)
+- docs/pr/: Pull request documentation and templates
+- .github/workflows/: CI/CD configuration (ci.yml)
+- .cursor/rules/: Cursor AI rules and project documentation
+diagram/link: [N/A]
+
+## 4. Coding Standards & Conventions
+
+language usage: Strict TypeScript mode (tsconfig.base.json strict: true), ES2022 target, NodeNext module resolution, noUnusedLocals: true, noImplicitReturns: true, isolatedModules: true. Prefer async/await patterns.
+naming conventions:
+- files/folders: kebab-case (observed in apps/backend-e2e/, apps/backend/, project structure)
+- components: PascalCase (React/Next.js standard)
+- variables/functions: camelCase (TypeScript standard)
+- types/interfaces: PascalCase (TypeScript standard)
+code style/formatting: [No explicit prettier/eslint config found in project context]
+comments: [No explicit commenting guidelines documented]
+imports: ES modules with NodeNext resolution (from tsconfig.base.json), relative paths for local imports
+
+## 5. Key Principles & Best Practices
+
+[No explicit principles documented in CONTRIBUTING.md - only contains "I like potatoes."]
+
+## 6. Testing
+
+framework: Jest (from apps/backend-e2e/ configuration), SWC for fast compilation (@swc-node/register)
+types: End-to-end tests for API endpoints (apps/backend-e2e/src/backend/), integration testing between backend and frontend
+location: Dedicated e2e testing application (apps/backend-e2e/) with implicit dependencies on backend
+coverage expectations: [N/A]
+
+## 7. Tooling & Workflow
+
+package manager: pnpm (pnpm-lock.yaml, pnpm-workspace.yaml, and .npmrc present)
+build command(s): nx build [project-name], pnpm exec nx build [project-name] (Nx-based builds with Webpack plugin)
+run command(s) (dev): nx serve [project-name], nx serve backend (starts on port 3333), nx dev frontend (Next.js with Turbopack)
+version control: Git with conventional commits encouraged. CI/CD via GitHub Actions (.github/workflows/ci.yml) running lint, test, build on affected projects.
+ci/cd: GitHub Actions (ci.yml) with pnpm 9.8.0, Node.js 20, runs on ubuntu-latest, executes "pnpm exec nx affected -t lint test build"
+ide recommendations: VS Code with Nx Console extension (nrwl.angular-console from .vscode/extensions.json)
+
+## 8. (Optional) Database / API Guidelines
+
+- Backend API serves on port 3333 with basic /api endpoint returning {"message":"Welcome to backend!"}
+- Uses Express.js with TypeScript for API development
+- E2E tests use Axios for HTTP client testing
+- [No specific API design guidelines documented]
+
+## 9. (Optional) Specific Feature Rules
+
+- Backend Development: Uses Webpack for bundling, serves static assets, development server with hot reload
+- Frontend Development: Next.js 15 with App Router, React 19, Tailwind CSS v4, Turbopack for development
+- Testing Strategy: Dedicated E2E testing app with Jest, tests depend on backend build and serve targets
+- [Authentication, i18n, state management guidelines not documented]
+
+## 10. (Optional) Rule Referencing
+
+- See [nx-rules.mdc](mdc:.cursor/rules/nx-rules.mdc) for Nx workspace guidelines
+- Follow [_project.mdc](mdc:.cursor/rules/_project.mdc) for project-specific context
+- Use [pull-request-create.mdc](mdc:.cursor/rules/pull-request-create.mdc) for PR creation workflow
+- Reference [_global.mdc](mdc:.cursor/rules/_global.mdc) for global development directives
