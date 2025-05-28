@@ -16,11 +16,13 @@ pnpm run hooks:install
 - Runs linting and type checking on affected projects
 - Only runs if there are staged files
 - Prevents commits with linting/type errors
+- Uses `CI=true` environment to disable Nx TUI
 
 ### Pre-push Hook
 - Runs the full CI verification: `lint`, `test`, and `build` on affected projects
 - Runs the exact same command that CI runs: `pnpm exec nx affected -t lint test build`
 - Prevents pushes that would fail in CI
+- Uses `CI=true` environment to disable Nx TUI
 
 ## Manual Verification
 
@@ -55,6 +57,14 @@ The hooks are installed in your git repository's hooks directory and will:
 
 If any verification fails, the commit/push will be blocked with a clear error message.
 
+## Git Worktree Support
+
+The installation script automatically detects git worktrees and installs hooks in both:
+- Main repository hooks directory
+- Worktree-specific hooks directory
+
+This ensures hooks work correctly regardless of your git setup.
+
 ## Benefits
 
 - **Catch issues early**: Find problems before they reach CI
@@ -62,10 +72,37 @@ If any verification fails, the commit/push will be blocked with a clear error me
 - **Team consistency**: Everyone runs the same verification locally
 - **Faster feedback**: Get immediate feedback instead of waiting for CI
 
+## Example Output
+
+### Successful Pre-commit
+```
+🔍 Running pre-commit checks...
+Running lint and typecheck on affected projects...
+✅ Pre-commit checks passed!
+```
+
+### Successful Pre-push
+```
+🚀 PRE-PUSH HOOK TRIGGERED! Running pre-push verification...
+Current directory: /path/to/project
+Git directory: /path/to/.git
+Current branch: feature-branch
+Running CI verification (lint, test, build) on affected projects...
+✅ Pre-push verification passed! Safe to push.
+```
+
 ## Troubleshooting
 
-If you need to bypass the hooks temporarily (not recommended):
+### Hooks not running
+- Ensure hooks are installed: `pnpm run hooks:install`
+- Check if hooks are executable: `ls -la .git/hooks/pre-*`
+- For worktrees, hooks are installed in both main repo and worktree
 
+### Terminal size errors
+- The hooks use `CI=true` to disable Nx TUI
+- If you still see terminal errors, the hooks will still work
+
+### Bypassing hooks (not recommended)
 ```bash
 # Skip pre-commit hook
 git commit --no-verify
@@ -74,4 +111,11 @@ git commit --no-verify
 git push --no-verify
 ```
 
-**Note**: Only use `--no-verify` in emergency situations, as it defeats the purpose of preventing CI failures. 
+**Note**: Only use `--no-verify` in emergency situations, as it defeats the purpose of preventing CI failures.
+
+## Technical Details
+
+- Hooks are written in shell script for maximum compatibility
+- Uses `CI=true` environment variable to disable Nx TUI in non-interactive environments
+- Supports both regular git repositories and git worktrees
+- Runs the same commands as CI to ensure consistency 
