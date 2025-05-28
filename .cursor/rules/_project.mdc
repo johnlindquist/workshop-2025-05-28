@@ -1,0 +1,85 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Workshop 2025-05-28 Backend Setup - Project Rules
+
+## 1. Project Overview
+
+goal: Workshop project for setting up a backend infrastructure with Express.js and comprehensive testing capabilities using Nx monorepo architecture
+type: Monorepo with Backend API and Frontend Applications
+key features:
+- Express.js backend API with TypeScript
+- End-to-end testing infrastructure with Jest
+- Nx monorepo workspace management
+- Webpack-based build system
+
+## 2. Technology Stack
+
+language(s): TypeScript 5.7.2 (from tsconfig.base.json and package.json)
+framework(s): Express.js 4.21.2 (from package.json), Nx 21.1.2 (monorepo framework)
+ui library/styling: [N/A - Backend focused project]
+database(s): [N/A - No database configuration found]
+state management: [N/A - Backend API project]
+api layer: REST API via Express.js
+key libraries:
+- express (^4.21.2) for HTTP server
+- axios (^1.6.0) for HTTP client testing
+- @swc/core (~1.5.7) for fast TypeScript compilation
+- webpack for bundling
+
+## 3. Project Structure
+
+main source directory: apps/
+core directories:
+- apps/backend/: Express.js backend application
+- apps/backend-e2e/: End-to-end testing for backend
+- apps/frontend/: Frontend application (existing)
+- packages/: Shared packages and libraries
+- .github/workflows/: CI/CD configuration
+diagram/link: [N/A]
+
+## 4. Coding Standards & Conventions
+
+language usage: Strict TypeScript mode (tsconfig.base.json strict: true), ES2022 target, NodeNext module resolution, Prefer async/await patterns
+naming conventions:
+- files/folders: kebab-case (observed in apps/backend-e2e/, apps/backend/)
+- components: [N/A - Backend focused]
+- variables/functions: camelCase (TypeScript standard)
+- types/interfaces: PascalCase (TypeScript standard)
+code style/formatting: [No explicit prettier/eslint config found in project context]
+comments: [No explicit commenting guidelines documented]
+imports: Relative paths, ES modules with NodeNext resolution (from tsconfig.base.json)
+
+## 5. Key Principles & Best Practices
+
+[No explicit principles documented]
+
+## 6. Testing
+
+framework: Jest (from apps/backend-e2e/jest.config.ts), SWC for fast compilation
+types: End-to-end tests for API endpoints (apps/backend-e2e/src/backend/backend.spec.ts)
+location: Dedicated e2e testing application (apps/backend-e2e/)
+coverage expectations: [N/A]
+
+## 7. Tooling & Workflow
+
+package manager: pnpm (pnpm-lock.yaml and pnpm-workspace.yaml present)
+build command(s): nx build [project-name] (Nx-based builds)
+run command(s) (dev): nx serve [project-name] (Nx-based development)
+version control: Git (from .git directory and .gitignore)
+ci/cd: GitHub Actions (from .github/workflows/ directory)
+ide recommendations: [N/A]
+
+## 8. (Optional) Database / API Guidelines
+
+[N/A]
+
+## 9. (Optional) Specific Feature Rules
+
+[N/A]
+
+## 10. (Optional) Rule Referencing
+
+[N/A]
